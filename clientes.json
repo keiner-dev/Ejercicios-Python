@@ -1,0 +1,23 @@
+[
+    {
+        "id": 2,
+        "nombre": "keio",
+        "edad": 12,
+        "plan": "mensual",
+        "estado": "activo"
+    },
+    {
+        "id": 3,
+        "nombre": "keiner",
+        "edad": 21,
+        "plan": "mensual",
+        "estado": "activo"
+    },
+    {
+        "id": 4,
+        "nombre": "messi",
+        "edad": 23,
+        "plan": "trimestral",
+        "estado": "activo"
+    }
+]

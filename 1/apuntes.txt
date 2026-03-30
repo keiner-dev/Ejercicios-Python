@@ -1,0 +1,166 @@
+Importar el módulo json:
+
+import json
+
+
+
+Si tiene una cadena JSON, puede analizarla utilizando el json.loads() método.
+import json
+
+# some JSON:
+x =  '{ "name":"John", "age":30, "city":"New York"}'
+
+# parse x:
+y = json.loads(x)
+
+# the result is a Python dictionary:
+print(y["age"])
+
+
+Si tienes un objeto Python, puedes convertirlo en una cadena JSON mediante usando el json.dumps() método.
+import json
+
+# a Python object (dict):
+x = {
+  "name": "John",
+  "age": 30,
+  "city": "New York"
+}
+
+# convert into JSON:
+y = json.dumps(x)
+
+# the result is a JSON string:
+print(y)
+
+
+El json.dumps() El método tiene parámetros para hacer más fácil la lectura del resultado:
+Ejemplo
+Utilice el indent parámetro para definir los números de sangrías:
+
+json.dumps(x, indent=4)
+
+
+También puedes definir los separadores, el valor predeterminado es (", ", ": "), que significa usar una coma y un espacio para separar cada objeto, y dos puntos y un espacio para separar claves de valores:
+Ejemplo
+Utilice el separators parámetro para cambiar el separador predeterminado:
+
+json.dumps(x, indent=4, separators=(". ", " = "))
+
+---------------------------------------------------------------------
+# Un cliente ES un diccionario
+cliente = {"id": 1, "nombre": "Carlos", "edad": 25}
+
+# Varios clientes = lista de diccionarios
+clientes = [
+    {"id": 1, "nombre": "Carlos", "edad": 25},
+    {"id": 2, "nombre": "Ana",    "edad": 30}
+]
+
+# Acceder a un valor
+print(clientes[0]["nombre"])  # Carlos
+
+# Modificar un valor
+clientes[0]["edad"] = 26
+
+# Agregar un cliente
+clientes.append({"id": 3, "nombre": "Luis", "edad": 22})
+
+# Eliminar un cliente
+clientes.remove(clientes[0])  # elimina el primero
+-----------------------------------------------------
+import json
+import os
+
+# GUARDAR lista → archivo
+def guardar(clientes):
+    with open("datos.json", "w") as f:
+        json.dump(clientes, f, indent=4)
+
+# CARGAR archivo → lista
+def cargar():
+    if os.path.exists("datos.json"):  # evita error si no existe
+        with open("datos.json", "r") as f:
+            return json.load(f)
+    return []  # si no hay archivo, empieza vacío
+    ---------------
+---------------------------------------------------------------------------------
+
+# ── CREATE ──────────────────────────────
+def crear(clientes):
+    nuevo_id = max([c["id"] for c in clientes], default=0) + 1
+    cliente = {"id": nuevo_id, "nombre": "Pedro", "edad": 28}
+    clientes.append(cliente)
+
+# ── READ (listar) ────────────────────────
+def listar(clientes):
+    for c in clientes:
+        print(c)
+
+# ── READ (buscar) ────────────────────────
+def buscar(clientes, termino):
+    # next() retorna el primero que cumpla, o None si no hay
+    resultado = next((c for c in clientes if c["nombre"] == termino), None)
+    return resultado
+
+# ── UPDATE ──────────────────────────────
+def actualizar(clientes, id_buscar, nuevo_nombre):
+    cliente = next((c for c in clientes if c["id"] == id_buscar), None)
+    if cliente:
+        cliente["nombre"] = nuevo_nombre  # modifica directo el diccionario
+
+# ── DELETE ──────────────────────────────
+def eliminar(clientes, id_buscar):
+    cliente = next((c for c in clientes if c["id"] == id_buscar), None)
+    if cliente:
+        clientes.remove(cliente)
+
+----------------------------------------------------------------------------
+# Sin try/except → el programa se rompe
+edad = int(input("Edad: "))  # si escribes "abc" → CRASH 💥
+
+# Con try/except → el programa sigue
+try:
+    edad = int(input("Edad: "))
+except ValueError:          # captura cuando no se puede convertir a int
+    print("❌ Escribe un número")
+--------------------------------------
+
+# 1. Que el ID sea número
+try:
+    id_buscar = int(input("ID: "))
+except ValueError:
+    print("❌ ID inválido")
+
+# 2. Que el campo no esté vacío
+nombre = input("Nombre: ").strip()
+if not nombre:
+    print("❌ No puede estar vacío")
+
+# 3. Que la opción del menú sea válida
+if opcion not in ["1","2","3","4","5","6"]:
+    print("❌ Opción inválida")
+
+
+-------------------------------
+
+# El menú SIEMPRE es un while True con break para salir
+while True:
+    opcion = input("Elige: ")
+
+    if opcion == "1":
+        crear(clientes)
+    elif opcion == "2":
+        listar(clientes)
+    elif opcion == "6":
+        break           # ← única salida del bucle
+    else:
+        print("❌ Inválida")
+
+-----------------------------------------------
+# Si tienes persistencia.py con funciones guardar/cargar,
+# en clientes.py escribes:
+from persistencia import guardar_clientes
+
+# Si necesitas varias funciones:
+from clientes import crear_cliente, listar_clientes, eliminar_cliente
